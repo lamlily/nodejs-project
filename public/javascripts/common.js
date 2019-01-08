@@ -21,7 +21,7 @@ var Element = {
         var eleNodes = [];
         for(var i=0;i<nodes.length;i++){
             if(nodes[i].nodeType == 1){
-                eleNodes.push(nodes[i]);
+                eleNodes.push(nodes[i]);7
             }
         }
         return eleNodes;//数组:所有的元素节点
@@ -216,3 +216,47 @@ function animate(ele,obj,time,fn){//元素、obj{要变化的属性:初始属性
 
 
 // 200px
+
+
+
+function randomCode(n){
+	// 显示4为随机验证码
+	// 字符串拼接
+	var mycode = '';
+	for(var i=0;i<n;i++){
+		mycode += parseInt(Math.random()*10);
+	}
+
+	return mycode;
+}
+
+
+/**
+ * 随机颜色
+ * @return {String} [rgb颜色]
+ */
+function randomColor(num){
+	if(num === 16){
+		var str = '0123456789abcdef';//str[0]
+		
+		var color = '#';
+		
+		for(var i=0;i<6;i++){
+			// 获取随机索引值
+			var idx = parseInt(Math.random()*str.length);
+
+			// 根据随机索引值得到随机16进制字符
+			color += str[idx];
+		}
+
+		return color;
+	}else{
+		var r = parseInt(Math.random()*256);
+		var g = parseInt(Math.random()*256);
+		var b = parseInt(Math.random()*256);
+
+
+		return 'rgb('+r+','+g+','+b+')';
+		
+	}
+}

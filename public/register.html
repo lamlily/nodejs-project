@@ -46,6 +46,8 @@
                 <div class="formControls col-xs-8 col-xs-offset-3">
                     <input id="yanzhengma" class="input-text size-L" type="text" placeholder="验证码" onblur="if(this.value==''){this.value='验证码:'}" onclick="if(this.value=='验证码:'){this.value='';}" value="验证码:" style="width:150px;">
                     <a id="kanbuq" href="javascript:;">点击获取邮箱验证码</a>
+                    <span class="code" style="display:inline-block;font-size:18px;text-align:center;line-height:30px;border:1px solid #ccc;background:#eee;"></span>
+
                 </div>
             </div>>
             <div class="row cl">
@@ -60,30 +62,39 @@
 <div class="footer">Copyright 你的公司名称 by H-ui.admin.page.v3.0</div>
 
 <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+<!-- <script type="text/javascript" src="./javascripts/jquery.js"></script> -->
 <script type="text/javascript" src="static/h-ui/js/H-ui.js"></script>
-<script>
+<script type="text/javascript" src="./javascripts/common.js"></script>
+<!-- <script>
     let rootpath='http://127.0.0.1:3000';
+
+    // 477800458@qq.com
+
     //检查邮箱名是否被占用
     let yanzheng = true;
     $("#youxiang").on("change",function(){
         let name = $("#youxiang").val().trim();
+        // 邮箱正则
         var reg = new RegExp("^[a-z0-9A-Z]+[- | a-z0-9A-Z . _]+@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-z]{2,}$"); 
+        // 验证邮箱
         if(name == ''){
               alert("邮箱不能为空！");
             return false;
         }else if(!reg.test(name)){
             alert("邮箱格式不正确，请重新输入！");
             return false;
-        }else{
-            let url=rootpath+'/admin/getUserInfo';
+        }
+        else{
+            let url="http://127.0.0.1:3000/setting/findUser";
             let data={
                 name:name
             }
             $.post(url,data,function(res){
                 // console.log(res)
-                if (res.err!=0) {
+                if (res=="fail") {
                     alert("邮箱名已占用！");
                     yanzheng=false;
+                    
                 }else{
                     yanzheng=true;
                 }
@@ -92,23 +103,25 @@
     })
 
     //发送验证码
-    $("#kanbuq").on("click",function(){
-        let name = $("#youxiang").val().trim();
-        let url=rootpath+'/admin/getCode';
-        let data={
-            name:name
-        }
-        if(yanzheng){
-            $.post(url,data,function(res){
-                // console.log(res)
-                if (res.err==0) {
-                    alert("验证码发送ok");
-                }
-            })
-        }else{
-            alert("请输入有效邮箱！");
-        }
-    })
+    // $("#kanbuq").on("click",function(){
+    //     let name = $("#youxiang").val().trim();
+    //     let url=rootpath+'/admin/getCode';
+    //     let data={
+    //         name:name
+    //     }
+    //     if(yanzheng){
+    //         $.post(url,data,function(res){
+    //             // console.log(res)
+    //             if (res.err==0) {
+    //                 alert("验证码发送ok");
+    //             }
+    //         })
+    //     }else{
+    //         alert("请输入有效邮箱！");
+    //     }
+    // })
+
+
     //注册
     $("#zhuce").on("click",function(){
 
@@ -118,7 +131,7 @@
         if(pass.length<6){
             alert("密码长度不小于6！");
         }
-        let url=rootpath+'/admin/reg';
+        let url="http://127.0.0.1:3000/setting/addUser";
         let data={
             name:name,
             pass:pass,
@@ -126,10 +139,11 @@
         }
         if(yanzheng){
             $.post(url,data,function(res){
-                // console.log(res)
-                if (res.err==0) {
+                console.log(res)
+                if (res=='success') {
                     Cookie.setCookie("admin",name);
                     location.href="index.html";
+                    // alert("注册成功");
                 }else{
                     alert("注册失败！");
                 }
@@ -143,6 +157,17 @@
 
 
 
+    // 随机验证码
+    // 默认打开页面即生成一个
+    $(".code").css({"background":randomColor(16),"width":"70px","height":"30px","display":"inline-block","text-align":"center"});
+    $(".code").html(randomCode(4));
+    // 点击验证码生成一个新的验证码
+    $("#kanbuq").click(function(){
+        $(".code").css({"background":randomColor(16),"width":"70px","height":"30px","display":"inline-block","text-align":"center"});
+        $(".code").html(randomCode(4));
+    });
+
+
 
 var _hmt = _hmt || [];
 (function() {
@@ -151,6 +176,16 @@ var _hmt = _hmt || [];
   var s = document.getElementsByTagName("script")[0]; 
   s.parentNode.insertBefore(hm, s);
 })();
-</script>
+
+
+</script> -->
+
+
+
+<!-- <script src="javascripts/jquery.js"></script> -->
+<script src="javascripts/register.js"></script>
+
+
+
 </body>
 </html>
