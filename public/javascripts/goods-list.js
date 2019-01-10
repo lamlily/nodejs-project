@@ -1,6 +1,6 @@
 $(() => {
 
-    // 用户信息
+    // 1.用户信息
     let admin1 = $.cookie("admin");
 
     $(".admin").html(admin1);
@@ -16,83 +16,22 @@ $(() => {
     let total = 0
     let nowpage = 1
 
-
-    // 获取商品列表并渲染
+ 
+    // 2.获取商品列表并渲染
     let getShowList = () => {
-            return new Promise((resolve, reject) => {
-                $.ajax({
-                    type: "GET",
-                    url: "http://127.0.0.1:3000/setting/showList",
-                    success(data) {
-                        resolve(data)
-                    }
-                })
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                type: "GET",
+                url: "http://127.0.0.1:3000/setting/showList",
+                success(data) {
+                    resolve(data)
+                }
             })
-        };
-        (async () => {
-            let data = await getShowList();
-            console.log(data);
-            let html = data.map((item, index) => {
-                return `
-                <tr>
-                    <td><input name="" type="checkbox" value="" data-num='${item['_id']}'></td>
-                    <td>${item._id}</td>
-                    <td>${item.name}</td>
-                    <td><img src='${rootpath}${item['imgpath']}'></td> 
-                    <td>${item.type}</td>
-                    <td>${item.price}</td>
-                    <td>${item.desc}</td>
-                    <td>${item.stock}</td>
-                    <td class="td-manage">
-                        <a style="text-decoration:none" class="ml-5" onClick="picture_edit('图库编辑','goods-update.html','${item['_id']}')" href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a>
-                        <a style="text-decoration:none" class="ml-5" onClick="picture_del(this,'${item['_id']}')" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a>
-                    </td>
-                </tr>            
-            `
-            }).join("");
-
-            $("#list").html(html);
-
-        })();
-
-    // td
-    { /* <td>${index+1}</td> */ }
-
-    { /* <td><img src='${rootpath}${data['goodslist'][i]['imgpath']}'></td> */ }
-
-    { /* <td class="td-status"><span class="label label-success radius">已发布</span></td>              */ }
-
-
-
-    // 搜索商品列表并渲染
-    let sousuo = $(".input-text")[0];
-
-
-    let getSearchData = () => {
-
-        let type = $(sousuo).val().trim();
-        if (type != "") {
-            return new Promise((resolve, reject) => {
-                $.ajax({
-                    type: "POST",
-                    data: {
-                        type
-                    },
-                    url: "http://127.0.0.1:3000/setting/searchdata",
-                    success(data) {
-                        console.log(data);
-                        resolve(data)
-                    }
-                })
-            })
-        }
-
+        })
     };
-    ( async () => {
-        let data = await getSearchData();
-
-
-
+    (async () => {
+        let data = await getShowList();
+        console.log(data);
         let html = data.map((item, index) => {
             return `
                 <tr>
@@ -111,14 +50,83 @@ $(() => {
                 </tr>            
             `
         }).join("");
-        console.log(html);
+
         $("#list").html(html);
 
     })();
 
+    // td
+    { /* <td>${index+1}</td> */ }
+
+    { /* <td><img src='${rootpath}${data['goodslist'][i]['imgpath']}'></td> */ }
+
+    { /* <td class="td-status"><span class="label label-success radius">已发布</span></td>              */ }
+
+
+
+    // 3.搜索商品列表并渲染  （查）
+    let sousuo = $(".input-text")[0];
+
+
+    let getSearchData = (fn) => {
+        console.log(55555)
+        let type = $(sousuo).val().trim();
+        if (type != "") {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    type: "POST",
+                    data: {
+                        type
+                    },
+                    url: "http://127.0.0.1:3000/setting/searchdata",
+                    success(data) {
+                        console.log(data);
+                        resolve(data);
+                        // fn(data);
+                    }
+                })
+            })
+        }
+
+    };
+
+// async改成了命名函数点击后再执行，而非匿名函数（箭头函数）会自执行
+    async function aaa() {
+        let data = await getSearchData();
+        if(!data || data.length ==0){
+            return false;
+        }
+
+        // function fn(data) {
+        let html = data.map((item, index) => {
+            return `
+                <tr>
+                    <td><input name="" type="checkbox" value="" data-num='${item['_id']}'></td>
+                    <td>${item._id}</td>
+                    <td>${item.name}</td>
+                    <td><img src='${rootpath}${item['imgpath']}'></td> 
+                    <td>${item.type}</td>
+                    <td>${item.price}</td>
+                    <td>${item.desc}</td>
+                    <td>${item.stock}</td>
+                    <td class="td-manage">
+                        <a style="text-decoration:none" class="ml-5" onClick="picture_edit('图库编辑','goods-update.html','${item['_id']}')" href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a>
+                        <a style="text-decoration:none" class="ml-5" onClick="picture_del(this,'${item['_id']}')" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a>
+                    </td>
+                </tr>            
+            `
+        }).join("");
+        // console.log(html);
+        $("#list").html(html);
+        // }
+    };
 
     // sousuo.oninput = getSearchData;
-    sousuo.onblur = getSearchData;
+    sousuo.onblur =aaa;
+    // 变成了原生[0]
+    // $(".searchBtn")[0].onclick = getSearchData;
+    // $(".searchBtn")[0].onclick = aaa;
+
 
 
 
@@ -158,9 +166,20 @@ $(() => {
     // }
 
 
-
-
-
-
-
 })
+
+
+
+// 4.添加商品
+function picture_add(title,url){
+    // 出现弹窗
+	var index = layer.open({
+		type: 2,
+		title: title,
+		content: url
+	});
+	layer.full(index);
+}
+
+
+

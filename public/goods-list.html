@@ -118,13 +118,14 @@
 			<article class="cl pd-20">
 
 				<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l">
-						<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a
-						 class="btn btn-primary radius" onclick="picture_add('添加商品','goods-add.html')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i>
+						<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i>
+							批量删除</a> <a class="btn btn-primary radius" onclick="picture_add('添加商品','goods-add.html')" href="javascript:;"><i
+							 class="Hui-iconfont">&#xe600;</i>
 							添加商品</a></span> <span class="r">共有数据：<strong id='total'>0</strong> 条</span> </div>
 				<div class="mt-20">
 
-					<input type="button" id="searchBtn"; value="搜索" style="position:absolute;right:20px;top:104px;width:40px;height:30px;">
-					
+					<!-- <input type="button" class="searchBtn"; value="搜索" style="position:absolute;right:20px;top:104px;width:40px;height:30px;"> -->
+
 					<table class="table table-border table-bordered table-bg table-hover table-sort">
 						<thead>
 							<tr class="text-c">
@@ -174,8 +175,6 @@
 
 	<script src="javascripts/jquery.cookie.js"></script>
 	<script type="text/javascript">
-	
-
 		$('.table-sort').dataTable({
 			"aaSorting": [
 				[1, "desc"]
@@ -192,19 +191,61 @@
 
 
 
+		// 1.添加商品
 
-		let rootpath = 'http://127.0.0.1:3000'
-		let pagesize = 6
-		let total = 0
-		let nowpage = 1
+		/*图片-添加*/
+		// function picture_add(title, url) {
+		// 	var index = layer.open({
+		// 		type: 2,
+		// 		title: title,
+		// 		content: url
+		// 	});
+		// 	layer.full(index);
+		// }
 
 
 
-		// ++++++++++++++++++++++++++++++++++
-		let ss;
+		//2.批量删除
+		// function datadel() {
+		// 	let zhong = $(":checked").not("#aaaa");
+		// 	let Id = [];
+		// 	for (let i = 0; i < zhong.length; i++) {
+		// 		if (i > 0) {
+		// 			Id.push(zhong[i].dataset.id)
+		// 		}
+		// 	}
+		// 	layer.confirm('确认要删除吗？', function (index) {
+		// 		//处理我们的删除方法
+		// 		$.post(rootpath + '/goods/delAllGood/', {
+		// 			id: Id
+		// 		}, function (res) {
+		// 			if (res.err == 0) {
+		// 				layer.msg('已删除!', {
+		// 					icon: 1,
+		// 					time: 1000
+		// 				});
+		// 				//假的刷新
+		// 				// getListData(page);//真刷新
+		// 				// getListData(page);
+		// 				// layer_close();
+		// 			}
+		// 		})
+
+		// 	});
+		// }
 
 
-		//获取数据  渲染视图
+
+		
+		// let rootpath = 'http://127.0.0.1:3000'
+		// let pagesize = 6
+		// let total = 0
+		// let nowpage = 1
+		// // ++++++++++++++++++++++++++++++++++
+		// let ss;
+
+
+		//3.获取数据  渲染视图
 		//通过ajax 获取首页数据
 		// getListData(1);
 		// function getListData(page){//每次点击下一页都要重新刷新一下数据，刷新的页码即为当前页
@@ -231,7 +272,7 @@
 		//   }) 
 		// }
 
-		//列表的渲染
+		//3.列表的渲染
 
 		// function load(data){
 
@@ -266,7 +307,7 @@
 		// }
 
 
-		// 模糊搜索重新的页面渲染
+		// 4.模糊搜索重新的页面渲染
 		// function loadKey(data){
 
 		//   if (data.length>0) {
@@ -300,7 +341,7 @@
 		// }
 
 
-		// //模糊字查询
+		// 4.模糊字查询
 		// let hh = $(".input-text")[0];
 		// hh.oninput=kkk;
 		// function kkk(){
@@ -326,14 +367,12 @@
 		//     }else{
 		//         getListData(1);
 		//     }
-
 		// }
 
 
 
 
-
-		//分页逻辑处理
+		//5.分页逻辑处理
 		// 点击某一页  获取该页的数据  然后渲染
 		// function goPage(type){
 		// 	//page表示目标页
@@ -375,10 +414,7 @@
 
 		/* 敌方代码*/
 
-
-
-
-		// 获取输入框检索内容
+		// 4.获取输入框检索内容
 		// $('.input-text ').val();
 		// function findGoods(keyword){
 		// 	console.log(keyword)
@@ -394,9 +430,10 @@
 		// 		let values = $('.input-text ').val();
 		// 		findGoods(values);
 		// });
+
+
 	</script>
 	<!--/请在上方写此页面业务相关的脚本-->
-
 
 
 
