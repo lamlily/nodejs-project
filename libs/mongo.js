@@ -25,6 +25,7 @@ let connect = () => {
   })
 }
 
+
 let insert = (col, arr) => {
   return new Promise(async (resolve, reject) => {
     let {
@@ -42,6 +43,7 @@ let insert = (col, arr) => {
     })
   })
 }
+
 
 let find = (col, obj) => {
   return new Promise(async (resolve, reject) => {
@@ -64,10 +66,40 @@ let find = (col, obj) => {
 }
 
 
+
+
+let del = (col,obj) => {
+  return new Promise(async (resolve, reject) => {
+    let {
+      db,
+      client
+    } = await connect();
+    const collection = db.collection(col);
+    collection.deleteMany({
+      ...obj
+    })
+    .then((res)=>{
+      resolve(res)
+    })
+    .catch((err)=>{
+      reject(err)
+    })
+     
+  
+  })
+}
+
+
+
+
+
+
+
 module.exports = {
   connect,
   insert,
   find,
+  del,
   ObjectId
 }
 

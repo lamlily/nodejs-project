@@ -10,15 +10,14 @@ $(() => {
         $(".admin").html("请先登录");
     })
 
-
     let rootpath = 'http://127.0.0.1:3000'
     let pagesize = 6
     let total = 0
     let nowpage = 1
-
  
     // 2.获取商品列表并渲染
     let getShowList = () => {
+        console.log(999);
         return new Promise((resolve, reject) => {
             $.ajax({
                 type: "GET",
@@ -90,7 +89,7 @@ $(() => {
 
     };
 
-// async改成了命名函数点击后再执行，而非匿名函数（箭头函数）会自执行
+    // async改成了命名函数点击后再执行，而非匿名函数（箭头函数）会自执行
     async function aaa() {
         let data = await getSearchData();
         if(!data || data.length ==0){
@@ -126,6 +125,65 @@ $(() => {
     // 变成了原生[0]
     // $(".searchBtn")[0].onclick = getSearchData;
     // $(".searchBtn")[0].onclick = aaa;
+
+})
+
+
+// 4.添加商品
+function picture_add(title,url){
+    // 出现弹窗
+	var index = layer.open({
+		type: 2,
+		title: title,
+		content: url
+	});
+	layer.full(index);
+};
+
+
+// 5.删除商品
+function picture_del(obj,id){
+	layer.confirm('确认要删除吗？',function(index){
+		//处理我们的删除方法
+		$.post('http://127.0.0.1:3000/setting/delGood',{id:id},function(res){
+            console.log(res);
+			if (res.n==1) {
+				$(obj).parents("tr").remove();
+		        layer.msg('已删除!',{icon:1,time:1000});
+		        //假的刷新
+		       // getShowList(page);//真刷新
+            //   getShowList(page);            
+			}else{
+                alert("fail");
+            }
+		})
+	});
+};
+
+
+// 6.批量删除
+function datadel(){
+    let zhong = $(":checked").not("#aaaa");
+    let Id = [];
+    for(let i=0;i<zhong.length;i++){
+        if(i>0){
+            Id.push(zhong[i].dataset.id)
+        }
+    }
+    layer.confirm('确认要删除吗？',function(index){
+        //处理我们的删除方法
+        $.post('http://127.0.0.1:3000/setting/delAllGood/',{id:Id},function(res){
+            if (res.n==1) {
+                layer.msg('已删除!',{icon:1,time:1000});
+                //假的刷新
+               // getShowList(page);//真刷新
+            //   getShowList(page);             
+            }
+        })    
+    });
+}
+
+
 
 
 
@@ -164,22 +222,5 @@ $(() => {
     //         }
     //     })
     // }
-
-
-})
-
-
-
-// 4.添加商品
-function picture_add(title,url){
-    // 出现弹窗
-	var index = layer.open({
-		type: 2,
-		title: title,
-		content: url
-	});
-	layer.full(index);
-}
-
 
 
