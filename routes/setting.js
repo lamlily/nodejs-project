@@ -169,12 +169,14 @@ router.post('/updateGood',async(req,res)=>{
     // 执行修改
     let _id=req.body.id;
     _id=ObjectId(_id);
-    let {name,type,price}=req.body;
+    let {name,type,price,desc,stock}=req.body;
     
     let data = await update(`goods`,{name}, {
         name,
         type,
-        price
+        price,
+        desc,
+        stock
     });
     console.log('----------------------------------------------')
     console.log(data)

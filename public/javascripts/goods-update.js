@@ -144,9 +144,11 @@ function updateGood(){
     $name = $('#name').val();
     $price = $('#price').val();
     $desc = $('#desc').val();
+    $type = $('#type').val();
+    $stock = $('#stock').val();
 console.log($name);
     // $.post(rootpath+'/goods/updateGoods',{id:id,name:$name,price:$price,desc:$desc},function(res){
-    $.post(url,{name:$name,price:$price,desc:$desc},function(res){
+    $.post(url,{name:$name,price:$price,desc:$desc,type:$type,stock:$stock},function(res){
         console.log(res);
         if(res=="success"){
             console.log(res.data);            
