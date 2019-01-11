@@ -85,6 +85,10 @@ $(() => {
                     }
                 })
             })
+        }else{
+            // getShowList();
+            // 若为空则自动刷新页面；== f5
+            window.parent.location.reload(true);   
         }
 
     };
@@ -162,26 +166,26 @@ function picture_del(obj,id){
 
 
 // 6.批量删除
-function datadel(){
-    let zhong = $(":checked").not("#aaaa");
-    let Id = [];
-    for(let i=0;i<zhong.length;i++){
-        if(i>0){
-            Id.push(zhong[i].dataset.id)
-        }
-    }
-    layer.confirm('确认要删除吗？',function(index){
-        //处理我们的删除方法
-        $.post('http://127.0.0.1:3000/setting/delAllGood/',{id:Id},function(res){
-            if (res.n==1) {
-                layer.msg('已删除!',{icon:1,time:1000});
-                //假的刷新
-               // getShowList(page);//真刷新
-            //   getShowList(page);             
-            }
-        })    
-    });
-}
+// function datadel(){
+//     let zhong = $(":checked").not("#aaaa");
+//     let Id = [];
+//     for(let i=0;i<zhong.length;i++){
+//         if(i>0){
+//             Id.push(zhong[i].dataset.id)
+//         }
+//     }
+//     layer.confirm('确认要删除吗？',function(index){
+//         //处理我们的删除方法
+//         $.post('http://127.0.0.1:3000/setting/delAllGood/',{id:Id},function(res){
+//             if (res.n==1) {
+//                 layer.msg('已删除!',{icon:1,time:1000});
+//                 //假的刷新
+//                // getShowList(page);//真刷新
+//             //   getShowList(page);             
+//             }
+//         })    
+//     });
+// }
 
 
 

@@ -95,8 +95,6 @@ function goodsadd() {
                 //如果提交审核成功，跳回首页goodslist（因为该框架的方法不是Location.href无法使用该方法，goodsadd依然为goodslist页面，用的是父级子级页面层，js中引用的，直接引用）
                 layer_close();
 
-
-
             } else {
                 //如果提交审核失败提示重新填写
                 alert("上传失败请重试")

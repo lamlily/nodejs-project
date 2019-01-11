@@ -8,6 +8,7 @@ const url = 'mongodb://localhost:27017';
 const dbName = 'demo';
 // Use connect method to connect to the server
 
+// 连接
 let connect = () => {
   return new Promise((resolve, reject) => {
     MongoClient.connect(url, (err, client) => {
@@ -26,6 +27,7 @@ let connect = () => {
 }
 
 
+// 添加
 let insert = (col, arr) => {
   return new Promise(async (resolve, reject) => {
     let {
@@ -45,6 +47,7 @@ let insert = (col, arr) => {
 }
 
 
+// 查询
 let find = (col, obj) => {
   return new Promise(async (resolve, reject) => {
     let {
@@ -66,9 +69,8 @@ let find = (col, obj) => {
 }
 
 
-
-
-let del = (col,obj) => {
+// 删除
+let del = (col, obj) => {
   return new Promise(async (resolve, reject) => {
     let {
       db,
@@ -76,19 +78,57 @@ let del = (col,obj) => {
     } = await connect();
     const collection = db.collection(col);
     collection.deleteMany({
-      ...obj
-    })
-    .then((res)=>{
-      resolve(res)
-    })
-    .catch((err)=>{
-      reject(err)
-    })
-     
-  
+        ...obj
+      })
+      .then((res) => {
+        resolve(res)
+      })
+      .catch((err) => {
+        reject(err)
+      })
   })
 }
 
+
+// // 修改
+// let update = (col, obj1,obj2) => {
+//   return new Promise(async (resolve, reject) => {
+//     let {
+//       db,
+//       client
+//     } = await connect();
+//     const collection = db.collection(col);
+//     collection.updateMany({
+//       ...obj1
+//     },{
+//       ...obj2
+//     })
+//     .then((res)=>{
+//       resolve(res)
+//     })
+//     .catch((err)=>{
+//       reject(err)
+//     });
+//   })
+// }
+
+let update = (col, obj1, obj2) => {
+  return new Promise(async (resolve, reject) => {
+    let {
+      db,
+      client
+    } = await connect();
+    const collection = db.collection(col);
+    collection.update({
+      ...obj1
+    }, { ...obj2
+    }).then((res) => {
+      resolve(res)
+    }).catch((err) => {
+      reject(err)
+    });
+  })
+}
 
 
 
@@ -100,6 +140,7 @@ module.exports = {
   insert,
   find,
   del,
+  update,
   ObjectId
 }
 
