@@ -84,7 +84,8 @@ function goodsadd() {
         }
 
         $.post(url, data, function (res) {
-            if (res == "success") {               
+            if (res == "success") {           
+                alert("添加成功");
                 // 重新加载goodslist页面渲染新加入的商品信息
                 getShowList();
                 // 框架的跳回原页面方法

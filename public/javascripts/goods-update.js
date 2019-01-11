@@ -13,7 +13,10 @@ function picture_edit(title,url,id){
     // // 2.在goodslist.html的picture_edit设置localstorage；storage.setItem();
 	// alert(storage.getItem("updateId"))//3.添加缓存；获取用getItem;哪里用哪里取；
 
-	 storage.setItem("updateId",id)//添加缓存
+    //  storage.setItem("updateId",id)//添加缓存
+     storage.setItem("updateName",name);
+     $("#name").val(storage.getItem("updateName"));
+    //  alert(storage.getItem("updateName"));
 	var index = layer.open({
 		type: 2,
 		title: title,
@@ -151,6 +154,7 @@ console.log($name);
     $.post(url,{name:$name,price:$price,desc:$desc,type:$type,stock:$stock},function(res){
         console.log(res);
         if(res=="success"){
+            alert("修改成功");
             console.log(res.data);            
             // 框架的跳回原页面方法
             //刷新页面goodslist页面
