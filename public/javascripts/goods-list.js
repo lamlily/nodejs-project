@@ -14,7 +14,7 @@ $(() => {
     let pagesize = 6
     let total = 0
     let nowpage = 1
- 
+
     // 2.获取商品列表并渲染
     let getShowList = () => {
         console.log(999);
@@ -85,10 +85,10 @@ $(() => {
                     }
                 })
             })
-        }else{
+        } else {
             // getShowList();
             // 若为空则自动刷新页面；== f5
-            window.parent.location.reload(true);   
+            window.parent.location.reload(true);
         }
 
     };
@@ -96,7 +96,7 @@ $(() => {
     // async改成了命名函数点击后再执行，而非匿名函数（箭头函数）会自执行
     async function aaa() {
         let data = await getSearchData();
-        if(!data || data.length ==0){
+        if (!data || data.length == 0) {
             return false;
         }
 
@@ -125,43 +125,82 @@ $(() => {
     };
 
     // sousuo.oninput = getSearchData;
-    sousuo.onblur =aaa;
+    sousuo.onblur = aaa;
     // 变成了原生[0]
     // $(".searchBtn")[0].onclick = getSearchData;
     // $(".searchBtn")[0].onclick = aaa;
+
+
+    // 4.自动校验token是否已过期（刷新操作才可校验） 
+    (async () => {
+        autoLogin=() =>{
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    type: "POST",
+                    headers: {
+                        token: localStorage.getItem("token")
+                    },
+                    url: "http://127.0.0.1:3000/setting/autoLogin",
+                    success(data) {
+                        resolve(data)
+                    }
+                })
+            })
+        }
+    
+        let isLogin = await autoLogin();
+        console.log(777);
+        console.log(isLogin);
+        if(!isLogin.status){
+            location.href="register.html";
+        }
+        // 异步 awiat和async
+        // fn[isLogin.status]()
+    
+        // 链式调用
+        
+    
+    })();
+
+
 
 })
 
 
 // 4.添加商品
-function picture_add(title,url){
+function picture_add(title, url) {
     // 出现弹窗
-	var index = layer.open({
-		type: 2,
-		title: title,
-		content: url
-	});
-	layer.full(index);
+    var index = layer.open({
+        type: 2,
+        title: title,
+        content: url
+    });
+    layer.full(index);
 };
 
 
 // 5.删除商品
-function picture_del(obj,id){
-	layer.confirm('确认要删除吗？',function(index){
-		//处理我们的删除方法
-		$.post('http://127.0.0.1:3000/setting/delGood',{id:id},function(res){
+function picture_del(obj, id) {
+    layer.confirm('确认要删除吗？', function (index) {
+        //处理我们的删除方法
+        $.post('http://127.0.0.1:3000/setting/delGood', {
+            id: id
+        }, function (res) {
             console.log(res);
-			if (res.n==1) {
-				$(obj).parents("tr").remove();
-		        layer.msg('已删除!',{icon:1,time:1000});
-		        //假的刷新
-		       // getShowList(page);//真刷新
-            //   getShowList(page);            
-			}else{
+            if (res.n == 1) {
+                $(obj).parents("tr").remove();
+                layer.msg('已删除!', {
+                    icon: 1,
+                    time: 1000
+                });
+                //假的刷新
+                // getShowList(page);//真刷新
+                //   getShowList(page);            
+            } else {
                 alert("fail");
             }
-		})
-	});
+        })
+    });
 };
 
 
@@ -197,34 +236,34 @@ function picture_del(obj,id){
 
 
 
-    // 分页数据
-    // getListData(1);
+// 分页数据
+// getListData(1);
 
-    // function getListData(page) { 
-    //     let ii = $($(".select")[0]).val()-0;
-    //     pagesize=ii;
-    //     //每次点击下一页都要重新刷新一下数据，刷新的页码即为当前页
-    //     let url = rootpath + '/setting/showList';
-    //     let data = {
-    //         pagesize: pagesize, //条数pagesize一共7条
-    //         page: page //页码page
-    //     }
-    //     nowpage = page;
-    //     //请求刷新的页数  作为当前页
-    //     $('.nowpage').html(nowpage); //当前页
+// function getListData(page) { 
+//     let ii = $($(".select")[0]).val()-0;
+//     pagesize=ii;
+//     //每次点击下一页都要重新刷新一下数据，刷新的页码即为当前页
+//     let url = rootpath + '/setting/showList';
+//     let data = {
+//         pagesize: pagesize, //条数pagesize一共7条
+//         page: page //页码page
+//     }
+//     nowpage = page;
+//     //请求刷新的页数  作为当前页
+//     $('.nowpage').html(nowpage); //当前页
 
 
-    //     $.post(url, data, function (res) {
-    //         console.log(res)
-    //         if (res=="success") { //成功
-    //             load(res.data) //调用加载函数
-    //             $('#total').html(res.data.total)
-    //             total = res.data.total;
-    //             // 求总页数（取整可能有小数）
-    //             $('.total').html(Math.ceil(total / pagesize)); //共几页
+//     $.post(url, data, function (res) {
+//         console.log(res)
+//         if (res=="success") { //成功
+//             load(res.data) //调用加载函数
+//             $('#total').html(res.data.total)
+//             total = res.data.total;
+//             // 求总页数（取整可能有小数）
+//             $('.total').html(Math.ceil(total / pagesize)); //共几页
 
-    //         }
-    //     })
-    // }
+//         }
+//     })
+// }
 
 

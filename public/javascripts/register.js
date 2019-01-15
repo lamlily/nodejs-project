@@ -53,9 +53,14 @@ $("#zhuce").on("click", function () {
     if (yanzheng) {
         $.post(url, data, function (res) {
             console.log(res)
-            if (res == 'success') {
+            if (res.status == 'success') {
 
-                // 将注册用户名存入cookie
+                console.log("注册成功");
+                // 将注册用户名字存入localStorage或者sessionStorage中
+                localStorage.setItem("token", res.token)
+                console.log(res.token);
+
+                // 将注册用户名存入cookie,用来记录用户名在首页显示用户名
                 // Cookie.setCookie("admin",name);
                 document.cookie = "admin=" + name + ";path=/";
 

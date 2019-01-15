@@ -29,7 +29,6 @@ function picture_edit(title,url,id){
 
 
 
-
 let rootpath = 'http://127.0.0.1:3000';
 // .获取商品列表并渲染
 let getShowList = () => {
@@ -91,6 +90,7 @@ function ajaximg() {
                 $('#uploadimg').attr('src', rootpath + data.data)
                 //更改图片的上传状态
                 upload = data.data; //改成相对路径的字符串即为true;
+                console.log(upload);
             } else {
                 alert(data.msg)
             }
@@ -149,9 +149,10 @@ function updateGood(){
     $desc = $('#desc').val();
     $type = $('#type').val();
     $stock = $('#stock').val();
-console.log($name);
+    $imgpath = upload;
+    console.log($imgpath);
     // $.post(rootpath+'/goods/updateGoods',{id:id,name:$name,price:$price,desc:$desc},function(res){
-    $.post(url,{name:$name,price:$price,desc:$desc,type:$type,stock:$stock},function(res){
+    $.post(url,{name:$name,price:$price,desc:$desc,type:$type,stock:$stock,imgpath:$imgpath},function(res){
         console.log(res);
         if(res=="success"){
             alert("修改成功");

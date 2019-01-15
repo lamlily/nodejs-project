@@ -14,6 +14,15 @@ var {
     ObjectId
 } = require("../libs/mongo.js");
 
+// 引入token.js
+var token = require("../libs/token.js");
+var {
+    createToken,
+    decodeToken,
+    checkToken
+  }=require("../libs/token.js");
+  
+
 
 /* GET users listing. */
 router.get('/', function (req, res, next) {
@@ -42,6 +51,7 @@ router.post('/addUser', async (req, res, next) => {
     let {
         name,
         pass
+        // 放入token加密
     } = req.body
     // 判断是否已有该用户名
     let data = await find(`users`, name ? {
@@ -50,10 +60,20 @@ router.post('/addUser', async (req, res, next) => {
     console.log(data);
     if(data.length == 0 ){
         let data = await insert("users",[{name,pass}])
-        res.send('success');
+        // res.send('success');
+        res.send({
+            status: "success",
+            // 成功插入即给token
+            token: token.createToken({
+              name,
+              pass
+            }, 3000)
+        });
 
     }else{
-        res.send("fail");
+        res.send({
+            status: "fail"
+        });
     } 
 });
 
@@ -158,8 +178,7 @@ router.post('/img',upload.single('test'),(req,res)=>{//保存图片的formdata �
 
 //     }else{
 //         res.send("fail");
-//     }
-  
+//     } 
 //   });
 
 //   6.修改商品
@@ -169,14 +188,15 @@ router.post('/updateGood',async(req,res)=>{
     // 执行修改
     let _id=req.body.id;
     _id=ObjectId(_id);
-    let {name,type,price,desc,stock}=req.body;
+    let {name,type,price,desc,stock,imgpath}=req.body;
     
     let data = await update(`goods`,{name}, {
         name,
         type,
         price,
         desc,
-        stock
+        stock,
+        imgpath
     });
     console.log('----------------------------------------------')
     console.log(data)
@@ -225,8 +245,7 @@ router.post('/delGood',async(req,res)=>{
 //     console.log(_id);
     
 //     for(var i=0;i<_id.length;i++){
-//         _id=ObjectId(_id[i]);
-       
+//         _id=ObjectId(_id[i]);      
 //     }
 //     console.log(_id);
 //     // Goods.remove({_id:id})//正常的删除
@@ -242,13 +261,13 @@ router.post('/delGood',async(req,res)=>{
 //   })
 
 
-
-
-
-
-
-
-
+// 9.自动校验token是否已经过期
+router.post('/autoLogin', async (req, res, next) => {
+    // console.log(req.headers)
+    res.send({
+      status: token.checkToken(req.headers.token)
+    })
+  })
 
 
 
